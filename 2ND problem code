@@ -1,0 +1,125 @@
+# ============================================================
+# PRACTICAL PROBLEM 2
+# CANDIDATE-ELIMINATION ALGORITHM
+# ============================================================
+
+import csv
+from itertools import product
+
+# ------------------------------------------------------------
+# STEP 1: Create EnjoySport CSV file
+# ------------------------------------------------------------
+
+data = [
+    ["Sky", "AirTemp", "Humidity", "Wind", "Water", "Forecast", "EnjoySport"],
+    ["Sunny", "Warm", "Normal", "Strong", "Warm", "Same", "Yes"],
+    ["Sunny", "Warm", "High", "Strong", "Warm", "Same", "Yes"],
+    ["Rainy", "Cold", "High", "Strong", "Warm", "Change", "No"],
+    ["Sunny", "Warm", "High", "Strong", "Cool", "Change", "Yes"]
+]
+
+with open("enjoysport.csv", "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerows(data)
+
+print("EnjoySport CSV file created successfully!")
+
+
+# ------------------------------------------------------------
+# STEP 2: Read the CSV file
+# ------------------------------------------------------------
+
+with open("enjoysport.csv", "r") as file:
+    reader = csv.reader(file)
+    data = list(reader)
+
+attributes = data[0][:-1]
+training_data = data[1:]
+
+print("\nAttributes:")
+print(attributes)
+
+print("\nTraining Examples:")
+for row in training_data:
+    print(row)
+
+
+# ------------------------------------------------------------
+# STEP 3: Get all possible values for each attribute
+# ------------------------------------------------------------
+
+domains = []
+
+for i in range(len(attributes)):
+    values = sorted(set(row[i] for row in training_data))
+    domains.append(values)
+
+
+# ------------------------------------------------------------
+# STEP 4: Generate all possible hypotheses
+# ------------------------------------------------------------
+
+possible_values = [domain + ["?"] for domain in domains]
+
+all_hypotheses = list(product(*possible_values))
+
+
+# ------------------------------------------------------------
+# STEP 5: Check whether a hypothesis is consistent
+# ------------------------------------------------------------
+
+def matches(hypothesis, example):
+
+    for h, value in zip(hypothesis, example):
+
+        if h != "?" and h != value:
+            return False
+
+    return True
+
+
+def is_consistent(hypothesis):
+
+    for example in training_data:
+
+        attributes_values = example[:-1]
+        target = example[-1]
+
+        prediction = matches(hypothesis, attributes_values)
+
+        if target == "Yes" and not prediction:
+            return False
+
+        if target == "No" and prediction:
+            return False
+
+    return True
+
+
+# ------------------------------------------------------------
+# STEP 6: Find all consistent hypotheses
+# ------------------------------------------------------------
+
+consistent_hypotheses = []
+
+for hypothesis in all_hypotheses:
+
+    if is_consistent(hypothesis):
+        consistent_hypotheses.append(hypothesis)
+
+
+# ------------------------------------------------------------
+# STEP 7: Display the Candidate-Elimination result
+# ------------------------------------------------------------
+
+print("\n==============================================")
+print("CANDIDATE-ELIMINATION RESULT")
+print("==============================================")
+
+print("\nNumber of consistent hypotheses:",
+      len(consistent_hypotheses))
+
+print("\nSet of all consistent hypotheses:")
+
+for hypothesis in consistent_hypotheses:
+    print(hypothesis)
