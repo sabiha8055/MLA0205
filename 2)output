@@ -1,0 +1,22 @@
+Attributes:
+['Sky', 'AirTemp', 'Humidity', 'Wind', 'Water', 'Forecast']
+
+Training Examples:
+['Sunny', 'Warm', 'Normal', 'Strong', 'Warm', 'Same', 'Yes']
+['Sunny', 'Warm', 'High', 'Strong', 'Warm', 'Same', 'Yes']
+['Rainy', 'Cold', 'High', 'Strong', 'Warm', 'Change', 'No']
+['Sunny', 'Warm', 'High', 'Strong', 'Cool', 'Change', 'Yes']
+
+==============================================
+CANDIDATE-ELIMINATION RESULT
+==============================================
+
+Number of consistent hypotheses: 6
+
+Set of all consistent hypotheses:
+('Sunny', 'Warm', '?', 'Strong', '?', '?')
+('Sunny', 'Warm', '?', '?', '?', '?')
+('Sunny', '?', '?', 'Strong', '?', '?')
+('Sunny', '?', '?', '?', '?', '?')
+('?', 'Warm', '?', 'Strong', '?', '?')
+('?', 'Warm', '?', '?', '?', '?')
