@@ -1,0 +1,88 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPZtq2uE7I3+dHqdSnOOrtb",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/sreepavithra04/MLA0205/blob/main/Practical%20Problems/EXP%2019\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "i0oBaYMF_cTl"
+      },
+      "outputs": [],
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.naive_bayes import GaussianNB\n",
+        "from sklearn.metrics import accuracy_score, confusion_matrix\n",
+        "\n",
+        "# Dataset\n",
+        "data = {\n",
+        "    'Age': [25, 30, 35, 40, 45, 50, 28, 32],\n",
+        "    'Income': [20000, 30000, 40000, 50000, 60000, 70000, 25000, 35000],\n",
+        "    'Loan': [50000, 60000, 70000, 80000, 90000, 100000, 55000, 65000],\n",
+        "    'CreditScore': [550, 600, 650, 700, 750, 800, 580, 620],\n",
+        "    'Approved': [0, 0, 1, 1, 1, 1, 0, 1]\n",
+        "}\n",
+        "\n",
+        "df = pd.DataFrame(data)\n",
+        "\n",
+        "# Features and Target\n",
+        "X = df[['Age', 'Income', 'Loan', 'CreditScore']]\n",
+        "y = df['Approved']\n",
+        "\n",
+        "# Split Dataset\n",
+        "X_train, X_test, y_train, y_test = train_test_split(\n",
+        "    X, y, test_size=0.25, random_state=42\n",
+        ")\n",
+        "\n",
+        "# Naive Bayes Model\n",
+        "model = GaussianNB()\n",
+        "model.fit(X_train, y_train)\n",
+        "\n",
+        "# Prediction\n",
+        "y_pred = model.predict(X_test)\n",
+        "\n",
+        "print(\"Predicted Values:\", y_pred)\n",
+        "print(\"Actual Values:\", list(y_test))\n",
+        "print(\"Accuracy:\", accuracy_score(y_test, y_pred))\n",
+        "\n",
+        "# Confusion Matrix\n",
+        "print(\"Confusion Matrix:\")\n",
+        "print(confusion_matrix(y_test, y_pred))\n",
+        "\n",
+        "# New Loan Prediction\n",
+        "new_customer = [[35, 45000, 70000, 680]]\n",
+        "result = model.predict(new_customer)\n",
+        "\n",
+        "if result[0] == 1:\n",
+        "    print(\"Loan Approved\")\n",
+        "else:\n",
+        "    print(\"Loan Not Approved\")"
+      ]
+    }
+  ]
+}
